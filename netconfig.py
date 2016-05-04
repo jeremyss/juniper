@@ -3,7 +3,6 @@ import datetime
 import argparse
 import getpass
 import pexpect
-import re
 
 _author__ = "Jeremy Scholz"
 
