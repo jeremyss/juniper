@@ -3,14 +3,16 @@ import datetime
 import argparse
 import getpass
 import pexpect
+import re
 
 _author__ = "Jeremy Scholz"
 
-parser = argparse.ArgumentParser(description='Remote networking device command processor')
+parser = argparse.ArgumentParser(description='Juniper device configuration command processor')
 parser.add_argument('-v', action='store_true', help='Output results to terminal')
 parser.add_argument('-host', type=str, help='Host(s) to run command on, separate multiple hosts with comma')
 parser.add_argument('-command', type=str,
-                    help='Command(s) to run enclosed in \'\', separate multiple commands with comma')
+                    help='Command(s) to run enclosed in \'\', separate multiple commands with comma. \n'
+                         'Last command should be \'commit and-quit\' to commit the configuration')
 args = parser.parse_args()
 
 command = []
@@ -18,7 +20,17 @@ hostList = []
 exCommands = []
 commands = ''
 hosts = ''
+validcommands = ["activate", "annotate", "copy", "deactivate", "delete", "insert", "protect", "rename", "replace",
+                 "rollback", "save", "set", "show", "status", "top", "unprotect", "wildcard"]
 
+def check_command(validcommands,exCommands):
+    if len(exCommands) == 0:
+        print "Please specify a command to run\n"
+        exit(1)
+    else:
+        for vc in validcommands:
+            if exCommands[0].startswith(vc):
+                return True
 
 def _run_command(command, results, lineHost, session, conferror):
     output = str()
@@ -47,11 +59,6 @@ def _run_command(command, results, lineHost, session, conferror):
             print output
         results.write(output)
         return "true"
-
-    '''
-    for lineOutput in stdout:
-        output += lineOutput
-    '''
 
     if args.v:
         print output
@@ -90,14 +97,24 @@ if runScript == "y":
     # read commands into list
     if args.command:
         exCommands = args.command.split(',')
+        if not check_command(validcommands,exCommands):
+            print "Command must begin with one of the following below"
+            for vc in validcommands:
+                print vc,
+            exit(1)
     else:
         try:
             commandsFile = open(commands, 'r')
             exCommands = commandsFile.readlines()
             commandsFile.close()
+            if not check_command(validcommands,exCommands):
+                print "Command must begin with one of the following below"
+                for vc in validcommands:
+                    print vc,
+                exit(1)
         except IOError:
             print "ERROR::File not found %s" % commands
-            exit(0)
+            exit(1)
 
     # read hosts into list
     if args.host:
