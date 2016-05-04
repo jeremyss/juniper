@@ -46,7 +46,7 @@ def _run_command(command, results, lineHost, session, conferror):
     else:
         session.expect(prompt + r'# $', timeout=120)
         output += session.before
-    if ("error" in output) or ("unknown" in output):
+    if ("error" or "unknown") in output:
         session.sendline('rollback 0')
         output += session.before
         session.expect(prompt + r'# $', timeout=120)
@@ -58,6 +58,7 @@ def _run_command(command, results, lineHost, session, conferror):
             print output
         results.write(output)
         return "true"
+
     if args.v:
         print output
     results.write(output)
