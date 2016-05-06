@@ -11,7 +11,8 @@ parser.add_argument('-v', action='store_true', help='Output results to terminal'
 parser.add_argument('-host', type=str, help='Host(s) to run command on, separate multiple hosts with comma')
 parser.add_argument('-command', type=str,
                     help='Command(s) to run enclosed in \'\', separate multiple commands with comma. \n'
-                         'Last command should be \'commit and-quit\' to commit the configuration')
+                         'Last commands should be \'show | compare\' \'commit check\' \'commit and-quit\' '
+                         'to commit the configuration')
 args = parser.parse_args()
 
 command = []
