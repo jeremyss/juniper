@@ -93,7 +93,7 @@ if runScript == "y":
     for lineHost in hostList:
         print "Running commands for %s...please wait" % lineHost.strip()
         try:
-            session = pexpect.spawn("ssh -l " + username + " -o StrictHostKeyChecking=no " + lineHost.strip(), timeout=3, maxread=65535)
+            session = pexpect.spawn("ssh -l " + username + " -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no " + lineHost.strip(), timeout=3, maxread=65535)
             session.expect('.*assword.')
             session.sendline(password)
             session.expect(r'> $')

@@ -11,7 +11,7 @@ parser.add_argument('-v', action='store_true', help='Output results to terminal'
 parser.add_argument('-host', type=str, help='Host(s) to run command on, separate multiple hosts with comma')
 parser.add_argument('-command', type=str,
                     help='Command(s) to run enclosed in \'\', separate multiple commands with comma. \n'
-                         'Last command should be \'commit and-quit\' to commit the configuration')
+                         'Last commands should be \'show | compare\' \'commit check\' \'commit and-quit\' to commit a configuration')
 args = parser.parse_args()
 
 command = []
@@ -129,7 +129,7 @@ if runScript == "y":
     for lineHost in hostList:
         print "Running commands for %s...please wait" % lineHost.strip()
         try:
-            session = pexpect.spawn("ssh -l " + username + " -o StrictHostKeyChecking=no " + lineHost.strip(),
+            session = pexpect.spawn("ssh -l " + username + " -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no " + lineHost.strip(),
                                     timeout=3, maxread=65535)
             session.expect('.*assword.')
             session.sendline(password)
