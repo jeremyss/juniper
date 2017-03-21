@@ -3,6 +3,7 @@ import datetime
 import argparse
 import getpass
 import pexpect
+
 _author__ = "Jeremy Scholz"
 
 parser = argparse.ArgumentParser(description='Remote networking device command processor')
@@ -18,7 +19,6 @@ exCommands = []
 commands = ''
 hosts = ''
 
-
 def _run_command(command, results, lineHost, session):
     output = str()
     prompt = session.before
@@ -29,7 +29,7 @@ def _run_command(command, results, lineHost, session):
 
     session.sendline(command)
     session.expect(prompt + r'> $', timeout=120)
-    output +=  session.before
+    output += session.before
     '''
     for lineOutput in stdout:
         output += lineOutput
@@ -37,6 +37,7 @@ def _run_command(command, results, lineHost, session):
     if args.v:
         print output
     results.write(output)
+
 
 now = datetime.datetime.now()
 currentDate = now.strftime('%m-%d-%Y')
@@ -93,7 +94,9 @@ if runScript == "y":
     for lineHost in hostList:
         print "Running commands for %s...please wait" % lineHost.strip()
         try:
-            session = pexpect.spawn("ssh -l " + username + " -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no " + lineHost.strip(), timeout=3, maxread=65535)
+            session = pexpect.spawn(
+                "ssh -l " + username + " -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
+                + lineHost.strip(), timeout=3, maxread=65535)
             session.expect('.*assword.')
             session.sendline(password)
             session.expect(r'> $')

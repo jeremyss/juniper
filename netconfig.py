@@ -11,7 +11,8 @@ parser.add_argument('-v', action='store_true', help='Output results to terminal'
 parser.add_argument('-host', type=str, help='Host(s) to run command on, separate multiple hosts with comma')
 parser.add_argument('-command', type=str,
                     help='Command(s) to run enclosed in \'\', separate multiple commands with comma. \n'
-                         'Last commands should be \'show | compare\' \'commit check\' \'commit and-quit\' to commit a configuration')
+                         'Last commands should be \'show | compare\' \'commit check\' '
+                         '\'commit and-quit\' to commit a configuration')
 args = parser.parse_args()
 
 command = []
@@ -22,7 +23,8 @@ hosts = ''
 validcommands = ["activate", "annotate", "copy", "deactivate", "delete", "insert", "protect", "rename", "replace",
                  "rollback", "save", "set", "show", "status", "top", "unprotect", "wildcard"]
 
-def check_command(validcommands,exCommands):
+
+def check_command(validcommands, exCommands):
     if len(exCommands) == 0:
         print "Please specify a command to run\n"
         exit(1)
@@ -30,6 +32,7 @@ def check_command(validcommands,exCommands):
         for vc in validcommands:
             if exCommands[0].startswith(vc):
                 return True
+
 
 def _run_command(command, results, lineHost, session, conferror):
     output = str()
@@ -95,7 +98,7 @@ if runScript == "y":
     # read commands into list
     if args.command:
         exCommands = args.command.split(',')
-        if not check_command(validcommands,exCommands):
+        if not check_command(validcommands, exCommands):
             print "Command must begin with one of the following below"
             for vc in validcommands:
                 print vc,
@@ -105,7 +108,7 @@ if runScript == "y":
             commandsFile = open(commands, 'r')
             exCommands = commandsFile.readlines()
             commandsFile.close()
-            if not check_command(validcommands,exCommands):
+            if not check_command(validcommands, exCommands):
                 print "Command must begin with one of the following below"
                 for vc in validcommands:
                     print vc,
@@ -129,8 +132,10 @@ if runScript == "y":
     for lineHost in hostList:
         print "Running commands for %s...please wait" % lineHost.strip()
         try:
-            session = pexpect.spawn("ssh -l " + username + " -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no " + lineHost.strip(),
-                                    timeout=3, maxread=65535)
+            session = pexpect.spawn(
+                "ssh -l " + username + " -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
+                + lineHost.strip(),
+                timeout=3, maxread=65535)
             session.expect('.*assword.')
             session.sendline(password)
             session.expect(r'> $')
