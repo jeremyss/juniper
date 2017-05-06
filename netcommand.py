@@ -74,6 +74,7 @@ if runScript == "y":
         try:
             commandsFile = open(commands, 'r')
             exCommands = commandsFile.readlines()
+            exCommands = map(lambda s: s.strip(), exCommands)
             commandsFile.close()
         except IOError:
             print "ERROR::File not found %s" % commands
