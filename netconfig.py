@@ -107,6 +107,7 @@ if runScript == "y":
         try:
             commandsFile = open(commands, 'r')
             exCommands = commandsFile.readlines()
+            exCommands = map(lambda s: s.strip(), exCommands)
             commandsFile.close()
             if not check_command(validcommands, exCommands):
                 print "Command must begin with one of the following below"
