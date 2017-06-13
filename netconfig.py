@@ -134,7 +134,7 @@ if runScript == "y":
         print "Running commands for %s...please wait" % lineHost.strip()
         try:
             session = pexpect.spawn(
-                "ssh -l " + username + " -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
+                "ssh -l " + username + " -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o PubkeyAuthentication=no "
                 + lineHost.strip(),
                 timeout=3, maxread=65535)
             session.expect('.*assword.')
