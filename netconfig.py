@@ -90,7 +90,7 @@ if args.host:
     print "Host list: %s" % args.host
 else:
     print "Host file: %s" % hosts
-runScript = raw_input("script will run with the above configuration... procede? Y/N: ")
+runScript = raw_input("script will run with the above configuration... proceed? Y/N: ")
 runScript = str.lower(runScript)
 
 if runScript == "y":
