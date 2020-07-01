@@ -56,7 +56,7 @@ if args.host:
     print "Host list: {hostlist}".format(hostlist=args.host)
 else:
     print "Host file: {hostfile}".format(hostfile=hosts)
-runScript = raw_input("script will run with the above configuration... procede? Y/N: ")
+runScript = raw_input("script will run with the above configuration... proceed? Y/N: ")
 runScript = str.lower(runScript)
 
 if runScript == "y":
